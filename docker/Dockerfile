@@ -47,6 +47,11 @@ RUN  set -x \
     && sh autogen.sh \
     && ./configure --prefix=/opt/janus \
     && make \
-    && make install
+    && make install \
+    && make configs
 
-CMD ["/opt/janus/bin/janus -A "]
+COPY run.sh /run.sh
+
+EXPOSE 8088 7088
+
+CMD  /run.sh
