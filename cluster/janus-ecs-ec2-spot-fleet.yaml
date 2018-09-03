@@ -70,8 +70,12 @@ Outputs:
       Ref: spotFleet
 Parameters:
   ecsClusterTargetCapacity:
-    Default: 2
+    Default: 1
     Description: Number of EC2 Spot instances to initially launch in the ECS cluster
+    Type: Number
+  janusClusterCapacity:
+    Default: 3
+    Description: Number of Janus instances to launch
     Type: Number
   instanceType:
     AllowedValues:
@@ -107,6 +111,24 @@ Resources:
     Type: AWS::Logs::LogGroup
   ecsCluster:
     Type: AWS::ECS::Cluster
+  janusTaskDefinition:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      ContainerDefinitions:
+        -
+          Name: "janus"
+          Image: "207142521427.dkr.ecr.us-east-1.amazonaws.com/janus"
+          Memory: "10"
+          Essential: "true"
+  janusService:
+    Type: AWS::ECS::Service
+    Properties:
+      Cluster:
+        Ref: "ecsCluster"
+      DesiredCount:
+        Ref: "janusClusterCapacity"
+      TaskDefinition:
+        Ref: "janusTaskDefinition"
   internetGateway:
     DependsOn:
     - vpc
