@@ -74,7 +74,7 @@ Parameters:
     Description: Number of EC2 Spot instances to initially launch in the ECS cluster
     Type: Number
   janusClusterCapacity:
-    Default: 3
+    Default: 20
     Description: Number of Janus instances to launch
     Type: Number
   instanceType:
@@ -119,6 +119,7 @@ Resources:
           Name: "janus"
           Image: "207142521427.dkr.ecr.us-east-1.amazonaws.com/janus"
           Memory: "10"
+          Cpu: "20"
           Essential: "true"
   janusService:
     Type: AWS::ECS::Service
