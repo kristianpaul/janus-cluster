@@ -74,7 +74,7 @@ Parameters:
     Description: Number of EC2 Spot instances to initially launch in the ECS cluster
     Type: Number
   janusClusterCapacity:
-    Default: 20
+    Default: 3
     Description: Number of Janus instances to launch
     Type: Number
   instanceType:
@@ -118,8 +118,36 @@ Resources:
         -
           Name: "janus"
           Image: "207142521427.dkr.ecr.us-east-1.amazonaws.com/janus"
-          Memory: "10"
+          Memory: "8"
           Cpu: "20"
+          Essential: "true"
+          PortMappings:
+          - ContainerPort: 8088
+            Protocol: tcp
+          - ContainerPort: 7088
+            Protocol: tcp
+  consulTaskDefinition:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      ContainerDefinitions:
+        -
+          Name: "consul"
+          Image: "consul"
+          Memory: "64"
+          Cpu: "100"
+          Essential: "true"
+          PortMappings:
+          - ContainerPort: 8600
+            Protocol: tcp
+  registratorTaskDefinition:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      ContainerDefinitions:
+        -
+          Name: "registrator"
+          Image: "gliderlabs/registrator:latest"
+          Memory: "64"
+          Cpu: "100"
           Essential: "true"
   janusService:
     Type: AWS::ECS::Service
@@ -130,6 +158,22 @@ Resources:
         Ref: "janusClusterCapacity"
       TaskDefinition:
         Ref: "janusTaskDefinition"
+  consulService:
+    Type: AWS::ECS::Service
+    Properties:
+      Cluster:
+        Ref: "ecsCluster"
+      DesiredCount: 1
+      TaskDefinition:
+        Ref: "consulTaskDefinition"
+  registratorService:
+    Type: AWS::ECS::Service
+    Properties:
+      Cluster:
+        Ref: "ecsCluster"
+      DesiredCount: 1
+      TaskDefinition:
+        Ref: "registratorTaskDefinition"
   internetGateway:
     DependsOn:
     - vpc
