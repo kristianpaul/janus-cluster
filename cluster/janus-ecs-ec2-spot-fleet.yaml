@@ -139,6 +139,7 @@ Resources:
           PortMappings:
           - ContainerPort: 8600
             Protocol: tcp
+            HostPort: 8600
   registratorTaskDefinition:
     Type: AWS::ECS::TaskDefinition
     Properties:
@@ -149,6 +150,9 @@ Resources:
           Memory: "64"
           Cpu: "100"
           Essential: "true"
+          EntryPoint:
+            - "/bin/registrator"
+            - "consul://localhost:8500"
   janusService:
     Type: AWS::ECS::Service
     Properties:
@@ -166,14 +170,14 @@ Resources:
       DesiredCount: 1
       TaskDefinition:
         Ref: "consulTaskDefinition"
-  registratorService:
-    Type: AWS::ECS::Service
-    Properties:
-      Cluster:
-        Ref: "ecsCluster"
-      DesiredCount: 1
-      TaskDefinition:
-        Ref: "registratorTaskDefinition"
+  #registratorService:
+  #  Type: AWS::ECS::Service
+  #  Properties:
+  #    Cluster:
+  #      Ref: "ecsCluster"
+  #    DesiredCount: 1
+  #    TaskDefinition:
+  #      Ref: "registratorTaskDefinition"
   internetGateway:
     DependsOn:
     - vpc
