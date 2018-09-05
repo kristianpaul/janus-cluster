@@ -73,10 +73,6 @@ Parameters:
     Default: 1
     Description: Number of EC2 Spot instances to initially launch in the ECS cluster
     Type: Number
-  janusClusterCapacity:
-    Default: 3
-    Description: Number of Janus instances to launch
-    Type: Number
   instanceType:
     AllowedValues:
     - t3.nano
@@ -111,73 +107,6 @@ Resources:
     Type: AWS::Logs::LogGroup
   ecsCluster:
     Type: AWS::ECS::Cluster
-  janusTaskDefinition:
-    Type: AWS::ECS::TaskDefinition
-    Properties:
-      ContainerDefinitions:
-        -
-          Name: "janus"
-          Image: "207142521427.dkr.ecr.us-east-1.amazonaws.com/janus"
-          Memory: "8"
-          Cpu: "20"
-          Essential: "true"
-          PortMappings:
-          - ContainerPort: 8088
-            Protocol: tcp
-          - ContainerPort: 7088
-            Protocol: tcp
-  consulTaskDefinition:
-    Type: AWS::ECS::TaskDefinition
-    Properties:
-      ContainerDefinitions:
-        -
-          Name: "consul"
-          Image: "consul"
-          Memory: "64"
-          Cpu: "100"
-          Essential: "true"
-          PortMappings:
-          - ContainerPort: 8600
-            Protocol: tcp
-            HostPort: 8600
-  registratorTaskDefinition:
-    Type: AWS::ECS::TaskDefinition
-    Properties:
-      ContainerDefinitions:
-        -
-          Name: "registrator"
-          Image: "gliderlabs/registrator:latest"
-          Memory: "64"
-          Cpu: "100"
-          Essential: "true"
-          EntryPoint:
-            - "/bin/registrator"
-            - "consul://localhost:8500"
-  janusService:
-    Type: AWS::ECS::Service
-    Properties:
-      Cluster:
-        Ref: "ecsCluster"
-      DesiredCount:
-        Ref: "janusClusterCapacity"
-      TaskDefinition:
-        Ref: "janusTaskDefinition"
-  consulService:
-    Type: AWS::ECS::Service
-    Properties:
-      Cluster:
-        Ref: "ecsCluster"
-      DesiredCount: 1
-      TaskDefinition:
-        Ref: "consulTaskDefinition"
-  #registratorService:
-  #  Type: AWS::ECS::Service
-  #  Properties:
-  #    Cluster:
-  #      Ref: "ecsCluster"
-  #    DesiredCount: 1
-  #    TaskDefinition:
-  #      Ref: "registratorTaskDefinition"
   internetGateway:
     DependsOn:
     - vpc
@@ -564,6 +493,7 @@ Resources:
         TargetCapacity:
           Ref: ecsClusterTargetCapacity
         TerminateInstancesWithExpiration: true
+        SpotPrice: "0.0020"
     Type: AWS::EC2::SpotFleet
   spotFleetInstanceProfile:
     DependsOn:
