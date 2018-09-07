@@ -1,0 +1,24 @@
+version: '3'
+services:
+  consul:
+    image: consul
+    container_name: consul
+    ports:
+    - 8500:8500
+
+  janus:
+    image: 207142521427.dkr.ecr.us-east-1.amazonaws.com/janus 
+    #image: janus-gateway:v0.01-7-g22b1c34
+    container_name: janus
+    ports:
+      - 7088
+      - 8088
+
+  registrator:
+    image: gliderlabs/registrator:latest
+    container_name: registrator
+    links:
+      - consul:consul
+    command: -internal consul://consul:8500
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock
