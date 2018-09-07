@@ -78,9 +78,10 @@ Parameters:
     - t3.nano
     - t3.medium
     - c5.large
+    - c3.large
     - c5d.large
 
-    Default: t3.nano
+    Default: c3.large
     Description: EC2 instance type to use for ECS cluster
     Type: String
   keyName:
@@ -493,7 +494,7 @@ Resources:
         TargetCapacity:
           Ref: ecsClusterTargetCapacity
         TerminateInstancesWithExpiration: true
-        SpotPrice: "0.0020"
+        SpotPrice: "0.03"
     Type: AWS::EC2::SpotFleet
   spotFleetInstanceProfile:
     DependsOn:
