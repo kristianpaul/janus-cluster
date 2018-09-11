@@ -4,21 +4,34 @@ services:
     image: consul
     container_name: consul
     ports:
-    - 8500:8500
-
-  janus:
-    image: 207142521427.dkr.ecr.us-east-1.amazonaws.com/janus 
-    #image: janus-gateway:v0.01-7-g22b1c34
-    container_name: janus
-    ports:
-      - 7088
-      - 8088
+    - 8500:8500  #Needs to expose consult to be reachable from registrator
 
   registrator:
     image: gliderlabs/registrator:latest
     container_name: registrator
     links:
       - consul:consul
-    command: -internal consul://consul:8500
+    command: -cleanup  -deregister="always" -internal=false  -resync=10 -ttl=6 -ttl-refresh=5  consul://consul:8500
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock
+
+  reverse-proxy:
+    image: traefik # The official Traefik docker image
+    command: --api --docker # Enables the web UI and tells Træfik to listen to docker
+    ports:
+      - "8088:8088"     # The HTTP janus api port
+      - "7088:7088"     # The HTTP janus admin api port
+      - "8080:8080" # The Web UI (enabled by --api)
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock # So that Traefik can listen to the Docker events
+
+  janus:
+    #image: 207142521427.dkr.ecr.us-east-1.amazonaws.com/janus 
+    image: janus-gateway:v0.01-7-g22b1c34
+    #container_name: janus
+    deploy:
+      mode: replicated
+      replicas: 3
+    ports:
+      - 7088
+      - 8088

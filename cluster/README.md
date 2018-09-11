@@ -15,3 +15,37 @@ aws cloudformation update-stack --stack-name janus --template-body file://janus-
 
 # Delete when done for testing
 aws cloudformation delete-stack --stack-name janus
+
+#Deploy locally with docker + swarm local
+
+docker-compose  up -d  --scale janus=3
+
+docker-compose ps
+
+Take it down:
+
+docker-compose down
+
+
+# Deploy remotelly with ecs-cli
+
+Required once and or if your ecs cluster name changes
+
+ecs-cli configure -c janus-ecsCluster-XXXXXXXXXX -r us-east-1
+
+ecs-cli compose --verbose up --cluster janus-ecsCluster-XXXXXXXXX
+
+ecs-cli compose down --cluster janus-ecsCluster-XXXXXXXX
+
+
+# Service discovery
+Janus micro service gets register on consul automatically, it can be visited via UI port 8500 
+
+curl -s  http://localhost:8500/v1/catalog/service/janus-gateway-8088
+curl -s http://localhost:8500/v1/catalog/service/janus-gateway-8088 | grep port -i
+
+# Load balancer 
+
+UI It is avalaible on port 8080
+
+Traefik automatically discovers and registers backends to load balancer
