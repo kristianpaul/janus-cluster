@@ -48,7 +48,12 @@ RUN  set -x \
     && ./configure --prefix=/opt/janus \
     && make \
     && make install \
-    && make configs
+    && make configs 
+
+RUN  set -x \
+    && rm -rf /libwebsockets \
+    && rm -rf /janus-gateway \
+    && rm -rf /boringssl
 
 COPY run.sh /run.sh
 
