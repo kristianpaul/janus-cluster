@@ -19,21 +19,7 @@ services:
     image: traefik # The official Traefik docker image
     command: --api --docker # Enables the web UI and tells Træfik to listen to docker
     ports:
-      - "80:80"     # The HTTP janus api port
       - "8080:8080" # The Web UI (enabled by --api)
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock # So that Traefik can listen to the Docker events
-
-  janus:
-    #image: 207142521427.dkr.ecr.us-east-1.amazonaws.com/janus 
-    image: janus-gateway:v0.01-13-g9e337de
-    #container_name: janus
-    deploy:
-      mode: replicated
-      replicas: 10
-    ports:
-            #      - 7088
-      - 8088
-    labels:
-      - "traefik.frontend.rule=Host:whoami.docker.localhost"
 
