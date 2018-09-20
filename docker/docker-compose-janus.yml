@@ -1,0 +1,13 @@
+version: '3'
+services:
+  janus:
+    #image: 207142521427.dkr.ecr.us-east-1.amazonaws.com/janus 
+    image: janus-gateway:v0.01-13-g9e337de
+    deploy:
+      mode: replicated
+      replicas: 1
+    ports:
+      - 8088
+    labels:
+      - "traefik.backend=${PROJECT}"
+      - "traefik.frontend.rule=Host:cloud1.kristianpaul.org;PathPrefixStrp:/janus${PROJECT}"
