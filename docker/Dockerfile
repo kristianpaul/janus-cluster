@@ -57,6 +57,6 @@ RUN  set -x \
 
 COPY run.sh /run.sh
 
-EXPOSE 8088 7088
+EXPOSE 80 7088
 
 CMD  /run.sh
