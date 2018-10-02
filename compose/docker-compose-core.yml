@@ -11,6 +11,12 @@ services:
     container_name: registrator
     links:
       - consul:consul
-    command: -cleanup  -deregister="always" -internal=true  -resync=10 -ttl=6 -ttl-refresh=5  consul://consul:8500
+    command: -cleanup  -deregister="always" -internal=false  -resync=10 -ttl=6 -ttl-refresh=5  consul://consul:8500
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock
+
+  loadbalancer:
+    image: nginx-lb:v0.01-27-gee67901
+    network_mode: "host"
+    ports:
+    - 80:80
