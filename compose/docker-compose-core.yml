@@ -3,12 +3,16 @@ services:
   consul:
     image: consul
     container_name: consul
+    networks:
+      - some-net
     ports:
     - 8500:8500  #Needs to expose consult to be reachable from registrator
 
   registrator:
     image: gliderlabs/registrator:latest
     container_name: registrator
+    networks:
+      - some-net
     links:
       - consul:consul
     command: -cleanup  -deregister="always" -internal=false  -resync=10 -ttl=6 -ttl-refresh=5  consul://consul:8500
@@ -16,7 +20,12 @@ services:
       - /var/run/docker.sock:/tmp/docker.sock
 
   loadbalancer:
-    image: nginx-lb:v0.01-27-gee67901
-    network_mode: "host"
+    image: nginx-lb:v0.01-29-g8b7739d
+    networks:
+      - some-net
     ports:
     - 80:80
+
+networks:
+  some-net:
+    driver: bridge
