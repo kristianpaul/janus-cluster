@@ -4,7 +4,7 @@ RUN  set -x \
     && apt-get update && apt-get install -y cmake build-essential aptitude git wget golang\
     && aptitude install -y libmicrohttpd-dev libjansson-dev libnice-dev \
     libssl-dev libsofia-sip-ua-dev libglib2.0-dev libopus-dev libogg-dev \
-    libcurl4-openssl-dev liblua5.3-dev pkg-config gengetopt libtool automake
+    libcurl4-openssl-dev liblua5.3-dev pkg-config gengetopt libtool automake curl jq
 RUN  set -x \
     && cd  \
     && wget https://github.com/cisco/libsrtp/archive/v2.2.0.tar.gz \
@@ -34,7 +34,7 @@ RUN  set -x \
     && ./configure --prefix=/usr && make && make install
 
 RUN  set -x \
-    && git clone git://git.libwebsockets.org/libwebsockets \
+    && git clone https://libwebsockets.org/repo/libwebsockets \
     && cd libwebsockets \
     && mkdir build \
     && cd build \
