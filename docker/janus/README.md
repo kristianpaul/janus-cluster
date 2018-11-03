@@ -1,7 +1,7 @@
 # janus-cluster
 ## Build
 
-docker build -t janus-gateway:$(git describe --tags) .
+docker build -t janus-gateway:v0.1 .
 
 ## Upload janus container to AWS container registry
 #Required once

@@ -1,7 +1,7 @@
 # janus-cluster
 ## Build
 
-docker build -t nginx-lb:$(git describe --tags) .
+docker build -t nginx-lb:v0.1 .
 
 
 ## TLS Cert issusing
