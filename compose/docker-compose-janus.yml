@@ -2,8 +2,7 @@ version: '3'
 services:
   janus:
     #image: 207142521427.dkr.ecr.us-east-1.amazonaws.com/janus 
-    #image: janus-gateway:v0.01-18-g24c9727
-    image: janus-gateway:v0.01-29-g8b7739d
+    image: janus-gateway:v0.1
     networks:
       - compose_some-net
     deploy:
