@@ -13,18 +13,23 @@ services:
     container_name: registrator
     networks:
       - some-net
-    links:
-      - consul:consul
-    command: -cleanup  -deregister="always" -internal=false  -resync=10 -ttl=6 -ttl-refresh=5  consul://consul:8500
+    command: -cleanup  -deregister="always" -internal=false  -resync=10 -ttl=6 -ttl-refresh=5  -retry-attempts=-1 consul://consul:8500
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock
 
   loadbalancer:
-    image: nginx-lb:v0.01-29-g8b7739d
+    image: nginx-lb:v0.1
     networks:
       - some-net
     ports:
     - 80:80
+    - 443:443
+
+  rtp-init:
+    image: rtp-init:v0.1
+    networks:
+      - some-net
+
 
 networks:
   some-net:
