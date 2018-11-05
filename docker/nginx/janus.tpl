@@ -1,8 +1,8 @@
 server {
-  server_name cloud1.kristianpaul.org;
+  server_name janus.webcall.ninjapbx.com;
 
-  ssl_certificate /etc/letsencrypt/live/cloud1.kristianpaul.org/fullchain.pem;
-  ssl_certificate_key /etc/letsencrypt/live/cloud1.kristianpaul.org/privkey.pem;
+  ssl_certificate /etc/letsencrypt/live/webcall.ninjapbx.com/fullchain.pem;
+  ssl_certificate_key /etc/letsencrypt/live/webcall.ninjapbx.com/privkey.pem;
   # Ensure this line points to your dhparams file
   ssl_dhparam /etc/nginx/ssl/dhparams.pem;
 
@@ -25,12 +25,6 @@ server {
 
   {{else}}# something missing {{end}}
   {{end}}
-
-
-  location / {
-    root /usr/share/nginx/html/;
-    index index.html;
-  }
 
   location /stub_status {
     stub_status;

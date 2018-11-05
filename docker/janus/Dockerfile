@@ -41,6 +41,17 @@ RUN  set -x \
     && cmake -DLWS_MAX_SMP=1 -DCMAKE_INSTALL_PREFIX:PATH=/usr -DCMAKE_C_FLAGS="-fpic" .. \
     && make && make install
 
+RUN set -x \
+    && apt-get -y remove libnice* \
+    && echo "deb-src http://deb.debian.org/debian stretch main" >> /etc/apt/sources.list \
+    && apt-get update \
+    && apt-get build-dep libnice -y \
+    && git clone https://gitlab.freedesktop.org/libnice/libnice \
+    && cd libnice \
+    && ./autogen.sh \
+    && ./configure --prefix=/usr \
+    && make && make install
+
 RUN  set -x \
     && git clone https://github.com/meetecho/janus-gateway.git \
     && cd janus-gateway \
