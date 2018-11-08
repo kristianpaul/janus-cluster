@@ -17,6 +17,11 @@ COPY janustlsdemo  /etc/nginx/sites-enabled/janustlsdemo
 
 COPY fullchain.pem  /etc/letsencrypt/live/webcall.ninjapbx.com/fullchain.pem
 COPY privkey.pem   /etc/letsencrypt/live/webcall.ninjapbx.com/privkey.pem
+COPY apitlspatch  /var/www/html/janus-gateway/html/apitlspatch
+
+RUN  set -x \
+    && cd /var/www/html/janus-gateway/html \
+    && git apply apitlspatch
 
 EXPOSE 443
 
