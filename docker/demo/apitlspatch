@@ -1,0 +1,35 @@
+From 355c585ffdbd8abf7d0225d86e240785f3fe567c Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Cristian=20Paul=20Pe=C3=B1aranda=20=20Rojas?=
+ <cristian.paul@prexenex.com>
+Date: Wed, 7 Nov 2018 05:11:32 +0000
+Subject: [PATCH] janus default token for demo
+
+---
+ html/echotest.js | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/html/echotest.js b/html/echotest.js
+index 4036e851..b3559bed 100644
+--- a/html/echotest.js
++++ b/html/echotest.js
+@@ -46,7 +46,7 @@ var server = null;
+ if(window.location.protocol === 'http:')
+ 	server = "http://" + window.location.hostname + ":8088/janus";
+ else
+-	server = "https://" + window.location.hostname + ":8089/janus";
++	server = "https://" + window.location.hostname + "/janus-gateway-7088janus_32834";
+ 
+ var janus = null;
+ var echotest = null;
+@@ -82,7 +82,7 @@ $(document).ready(function() {
+ 					// 		iceServers: [{urls: "turn:yourturnserver.com:443?transport=tcp", username: "janususer", credential: "januspwd"}],
+ 					// 		iceServers: [{urls: "turns:yourturnserver.com:443?transport=tcp", username: "janususer", credential: "januspwd"}],
+ 					// Should the Janus API require authentication, you can specify either the API secret or user token here too
+-					//		token: "mytoken",
++					token: "mytoken",
+ 					//	or
+ 					//		apisecret: "serversecret",
+ 					success: function() {
+-- 
+2.17.1
+

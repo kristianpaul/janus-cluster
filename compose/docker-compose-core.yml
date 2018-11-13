@@ -27,8 +27,25 @@ services:
 
   rtp-init:
     image: rtp-init:v0.1
+    container_name: rtp-init
     networks:
       - some-net
+
+  demo:
+    image:  demo:v0.1
+    container_name: demo
+    networks:
+      - some-net
+    ports:
+      - 4443:443
+
+  api:
+    image:  api:v0.1
+    container_name: api
+    networks:
+      - some-net
+    ports:
+      - 8080:8080
 
 
 networks:
