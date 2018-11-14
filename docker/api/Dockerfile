@@ -5,6 +5,7 @@ RUN  set -x \
 
 COPY run.sh /run.sh
 COPY helloworld.py /helloworld.py
+COPY janus_url_generator.py /janus_url_generator.py
 
 EXPOSE 8080
 

@@ -2,7 +2,7 @@
 
 #Run rtp seats initialization
 for i in $(seq 20000 20100); do curl -s --request PUT     --data  "avaliable"   http://consul:8500/v1/kv/rtp/$i; done
-echo "Done"
+while true; do echo "I'm done here, but cant die"; sleep 1d; done
 
 # Do not run this or will kill consul, needs to be done as transaction
 #while true

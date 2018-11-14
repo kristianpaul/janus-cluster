@@ -4,7 +4,7 @@ RUN  set -x \
     && apt-get update && apt-get install -y cmake build-essential aptitude git wget golang\
     && aptitude install -y libmicrohttpd-dev libjansson-dev libnice-dev \
     libssl-dev libsofia-sip-ua-dev libglib2.0-dev libopus-dev libogg-dev \
-    libcurl4-openssl-dev liblua5.3-dev pkg-config gengetopt libtool automake curl jq httpie vim
+    libcurl4-openssl-dev liblua5.3-dev pkg-config gengetopt libtool automake curl jq httpie vim screen
 RUN  set -x \
     && cd  \
     && wget https://github.com/cisco/libsrtp/archive/v2.2.0.tar.gz \
