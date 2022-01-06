@@ -20,7 +20,7 @@ ecs-cli ps
 
 ecs-cli down
 
-#deploy on local docker host acting as swarm local
+# deploy on local docker host acting as swarm local
 
 sudo docker-compose -f docker-compose-core.yml up -d
 sudo bash 
