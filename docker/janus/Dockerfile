@@ -68,4 +68,4 @@ COPY run.sh /run.sh
 
 EXPOSE 80 7088
 
-CMD  /run.sh
+CMD  /bin/bash /run.sh
