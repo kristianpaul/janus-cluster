@@ -1,10 +1,10 @@
-FROM debian:stretch-slim
+FROM debian:bullseye-slim
 
 RUN  set -x \
     && apt-get update && apt-get install -y cmake build-essential aptitude git wget golang\
-    && aptitude install -y libmicrohttpd-dev libjansson-dev libnice-dev \
+    && aptitude install -y libmicrohttpd-dev libjansson-dev libnice-dev libconfig-dev \
     libssl-dev libsofia-sip-ua-dev libglib2.0-dev libopus-dev libogg-dev \
-    libcurl4-openssl-dev liblua5.3-dev pkg-config gengetopt libtool automake curl jq httpie vim screen
+    libcurl4-openssl-dev liblua5.3-dev pkg-config gengetopt libtool automake curl jq httpie vim screen meson
 RUN  set -x \
     && cd  \
     && wget https://github.com/cisco/libsrtp/archive/v2.2.0.tar.gz \
@@ -43,14 +43,12 @@ RUN  set -x \
 
 RUN set -x \
     && apt-get -y remove libnice* \
-    && echo "deb-src http://deb.debian.org/debian stretch main" >> /etc/apt/sources.list \
+    && echo "deb-src http://deb.debian.org/debian bullseye main" >> /etc/apt/sources.list \
     && apt-get update \
     && apt-get build-dep libnice -y \
     && git clone https://gitlab.freedesktop.org/libnice/libnice \
     && cd libnice \
-    && ./autogen.sh \
-    && ./configure --prefix=/usr \
-    && make && make install
+    && meson --prefix=/usr build && ninja -C build &&  ninja -C build install
 
 RUN  set -x \
     && git clone https://github.com/meetecho/janus-gateway.git \
@@ -70,4 +68,4 @@ COPY run.sh /run.sh
 
 EXPOSE 80 7088
 
-CMD  /run.sh
+CMD  /bin/bash /run.sh
